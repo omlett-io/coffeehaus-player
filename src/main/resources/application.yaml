@@ -1,0 +1,15 @@
+spring:
+  data:
+    cassandra:
+      keyspace-name: ${CASSANDRA_KEYSPACE_NAME:iam}
+      username: ${CASSANDRA_USERNAME:username}
+      password: ${CASSANDRA_PASSWORD:pass}
+      contact-points: ${CASSANDRA_CONTACT_POINTS:localhost}
+      port: ${CASSANDRA_PORT:9042}
+
+spotify:
+  client-id: ${SPOTIFY_CLIENT_ID:0123456789}
+  client-secret: ${SPOTIFY_CLIENT_SECRET:9876543210}
+  redirect-uri: ${SPOTIFY_REDIRECT_URI:http://localhost:3000/coffeehaus}
+  scopes:
+    full-access: "playlist-read-collaborative,playlist-modify-private,playlist-modify-public,playlist-read-private,user-modify-playback-state,user-read-currently-playing,user-read-playback-state,user-read-private,user-read-email,user-library-modify,user-library-read,user-follow-modify,user-follow-read,user-read-recently-played,user-top-read,streaming,app-remote-control"
