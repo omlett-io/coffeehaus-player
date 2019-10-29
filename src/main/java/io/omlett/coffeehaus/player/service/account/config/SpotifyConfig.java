@@ -1,4 +1,4 @@
-package io.omlett.coffeehaus.player.service;
+package io.omlett.coffeehaus.player.service.account.config;
 
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.SpotifyHttpManager;
@@ -7,9 +7,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@AllArgsConstructor
 @Configuration
 @EnableConfigurationProperties({SpotifyClientProperties.class, SpotifyScopesProperties.class})
+@AllArgsConstructor
 public class SpotifyConfig {
 
   @Bean

@@ -1,11 +1,12 @@
 spring:
   data:
     cassandra:
-      keyspace-name: ${CASSANDRA_KEYSPACE_NAME:iam}
-      username: ${CASSANDRA_USERNAME:username}
-      password: ${CASSANDRA_PASSWORD:pass}
       contact-points: ${CASSANDRA_CONTACT_POINTS:localhost}
       port: ${CASSANDRA_PORT:9042}
+      username: ${CASSANDRA_USERNAME:username}
+      password: ${CASSANDRA_PASSWORD:pass}
+      keyspace-name: ${CASSANDRA_KEYSPACE_NAME:coffeehaus}
+
 
 spotify:
   client-id: ${SPOTIFY_CLIENT_ID:0123456789}

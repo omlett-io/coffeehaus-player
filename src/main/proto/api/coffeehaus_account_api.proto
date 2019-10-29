@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+option java_package = "io.omlett.coffeehaus.player.service.web.proto";
+option java_multiple_files = true;
+
+import "common/coffeehaus_auth.proto";
+import "common/coffeehaus_enums.proto";
+
+message AccountProfile {
+  string username = 1;
+  string email_address = 2;
+  string first_name = 3;
+  string middle_name = 4;
+  string last_name = 5;
+}
+
+message Player {
+  string id = 1;
+  string owner_id = 2;
+  MusicStreamingService type = 3;
+}
+
+/** Request a uri to redirect a user to, where they can log-in and grant
+  * CoffeeHaus the necessary permissions to control their specified
+  * music streaming service's player. */
+message AuthorizationUriRequest {
+  AuthInfo auth = 1;
+  repeated MusicStreamingService services = 2;
+}
+
+message AuthorizationUriResponse {
+  repeated string service_uri = 1;
+}
+
+/** POST the authorization code returned by the music streaming service.
+  * CoffeeHaus will use this to act on the user's behalf. */
+message AddPlayerRequest {
+  AuthInfo auth = 1;
+  MusicStreamingService player_type = 2;
+  string player_authorization_code = 3;
+}
+
+message AddPlayerResponse {
+  bool status = 1;
+  Player player = 2;
+}
+
+message DeletePlayerRequest {
+  AuthInfo auth = 1;
+  string player_id = 2;
+}
+
+/** A user must request permission from the owner of a player, if they
+  * wish to control it. */
+message AddPlayerControlRequest {
+  AuthInfo auth = 1;
+  Player player = 2;
+}
+
+message DeletePlayerControlRequest {
+  AuthInfo auth = 1;
+  Player player = 2;
+}

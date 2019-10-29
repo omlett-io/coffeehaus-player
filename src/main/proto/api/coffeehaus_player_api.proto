@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_package = "io.omlett.coffeehaus.player.service.web.proto";
+option java_multiple_files = true;
+
+import "common/coffeehaus_auth.proto";
+import "common/coffeehaus_enums.proto";
+
+message PlayerCommandRequest {
+  AuthInfo auth = 1;
+  PlayerCommand command = 2;
+}

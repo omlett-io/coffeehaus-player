@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option java_package = "io.omlett.coffeehaus.player.service.persistence.proto";
+option java_multiple_files = true;
+
+import "common/coffeehaus_enums.proto";
+
+message AccountProfileEntity {
+  string username = 1;
+  string email_address = 2;
+  string first_name = 3;
+  string middle_name = 4;
+  string last_name = 5;
+  repeated string players_owned = 6;        // [UUID]
+  repeated string players_controlled = 7;   // [UUID]
+}
+
+message PlayerControlLink {
+  string player_id = 1;
+  string controller_id = 2;
+  string scopes = 3;
+}
+
+message PlayerProfileEntity {
+  MusicStreamingService type = 1;
+  string authorization_code = 2;
+  string access_token = 3;
+  string refresh_code = 4;
+  repeated PlayerControlLink controllers = 5;
+}
+
