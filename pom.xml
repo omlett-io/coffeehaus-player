@@ -36,7 +36,7 @@
     -->
     <protobuf.protoc.path>/usr/bin/protoc</protobuf.protoc.path>
     <docker.image.repository>us.gcr.io/omlett-platform</docker.image.repository>
-    <docker.image.base>${docker.image.repository}/adoptopenjdk:11-jdk-alpine-protobuf</docker.image.base>
+    <docker.image.base>adoptopenjdk/openjdk11:alpine</docker.image.base>
     <docker.image.finalName>${docker.image.repository}/${project.artifactId}</docker.image.finalName>
   </properties>
 

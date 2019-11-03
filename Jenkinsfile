@@ -10,7 +10,9 @@ pipeline {
           serviceAccountName: jenkins
           containers:
           - name: maven
-            image: maven:3.6.2-jdk-11
+            image: us.gcr.io/omlett-platform/maven:3.6.2-jdk-11-protobuf-3.6.1
+            command:
+            - cat
             tty: true
             volumeMounts:
               - name: dockersock
@@ -60,6 +62,14 @@ pipeline {
     }
 
     stage('Build & Push New Docker Image') {
+      when {
+        anyOf {
+          branch 'develop'; branch 'master'
+          expression {
+            return true
+          }
+        }
+      }
       steps {
         container('maven') {
           sh 'mvn clean package'
@@ -68,6 +78,14 @@ pipeline {
     }
 
     stage('Deploy Helm Charts') {
+      when {
+        anyOf {
+          branch 'develop'; branch 'master'
+          expression {
+            return true
+          }
+        }
+      }
       steps {
         container('helm') {
           withCredentials([string(credentialsId: 'chartmuseum-secret', variable: 'CHARTMUSEUM_CREDENTIALS')]) {
@@ -75,9 +93,9 @@ pipeline {
               ' helm plugin install https://github.com/chartmuseum/helm-push && ' +
               ' helm repo add omlett https://chartmuseum.omlett.io/ --username=admin --password=$CHARTMUSEUM_CREDENTIALS && ' +
               ' helm repo update && ' +
-              ' helm push -f ./charts/coffeehaus-web omlett && ' +
+              ' helm push -f ./charts/coffeehaus-player omlett && ' +
               ' helm repo update && ' +
-              ' helm upgrade coffeehaus-web omlett/coffeehaus-web --namespace coffeehaus --recreate-pods'
+              ' helm install --name coffeehaus-player omlett/coffeehaus-player --namespace coffeehaus'
           }
         }
       }
