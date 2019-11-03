@@ -66,7 +66,7 @@ pipeline {
         anyOf {
           branch 'develop'; branch 'master'
           expression {
-            return true
+            return params.FORCE_DOCKER_PUBLISH
           }
         }
       }
@@ -82,7 +82,7 @@ pipeline {
         anyOf {
           branch 'develop'; branch 'master'
           expression {
-            return true
+            return params.FORCE_HELM_PUBLISH
           }
         }
       }
@@ -95,7 +95,7 @@ pipeline {
               ' helm repo update && ' +
               ' helm push -f ./charts/coffeehaus-player omlett && ' +
               ' helm repo update && ' +
-              ' helm install --name coffeehaus-player omlett/coffeehaus-player --namespace coffeehaus'
+              ' helm upgrade coffeehaus-player omlett/coffeehaus-player --namespace coffeehaus --recreate-pods'
           }
         }
       }

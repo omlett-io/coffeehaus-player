@@ -23,14 +23,14 @@ ingress:
     kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
-    - host: coffeehaus.io
+    - host: api.coffeehaus.io
       paths:
         - /
 
   tls:
-  - secretName: coffeehaus-io-tls-cert
+  - secretName: api-coffeehaus-io-tls-cert
     hosts:
-      - coffeehaus.io
+      - api.coffeehaus.io
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious

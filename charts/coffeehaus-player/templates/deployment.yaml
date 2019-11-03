@@ -37,22 +37,22 @@ spec:
                 key: cassandra.port
           - name: CASSANDRA_USERNAME
             valueFrom:
-              configMapKeyRef:
+              secretKeyRef:
                 name: coffeehaus-secrets
                 key: cassandra-username
           - name: CASSANDRA_PASSWORD
             valueFrom:
-              configMapKeyRef:
+              secretKeyRef:
                 name: coffeehaus-secrets
                 key: cassandra-password
           - name: SPOTIFY_CLIENT_ID
             valueFrom:
-              configMapKeyRef:
+              secretKeyRef:
                 name: coffeehaus-secrets
                 key: spotify-client-id
           - name: SPOTIFY_CLIENT_SECRET
             valueFrom:
-              configMapKeyRef:
+              secretKeyRef:
                 name: coffeehaus-secrets
                 key: spotify-client-secret
           - name: SPOTIFY_REDIRECT_URI
