@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.omlett.coffeehaus</groupId>
-  <artifactId>player</artifactId>
+  <artifactId>coffeehaus-player</artifactId>
   <version>1.0-SNAPSHOT</version>
 
   <!-- Inherit defaults from Spring Boot -->
@@ -27,14 +27,17 @@
     <!-- Maven Plugin Versions -->
     <compiler.plugin.version>3.8.0</compiler.plugin.version>
     <protobuf.plugin.version>0.6.1</protobuf.plugin.version>
-    <fabric8.plugin.version>4.3.0</fabric8.plugin.version>
+    <jib.plugin.version>1.7.0</jib.plugin.version>
     <!-- Maven Plugin Configurations -->
-    <compiler.source.version>12</compiler.source.version>
-    <compiler.target.version>12</compiler.target.version>
-    <protobuf.protoc.path>/usr/local/opt/protobuf@3.6/bin/protoc</protobuf.protoc.path>
-    <fabric8.docker.image.repository>us.gcr.io/omlett-platform</fabric8.docker.image.repository>
-    <fabric8.resource.directory>${basedir}/fabric8</fabric8.resource.directory>
-    <fabric8.build.jar.file>target/${project.build.finalName}-exec.jar</fabric8.build.jar.file>
+    <java.version>11</java.version>
+    <!-- NOTE: SET YOUR PROTOC COMPILER PATH
+         You can find it using this command:
+         > type -a protoc
+    -->
+    <protobuf.protoc.path>/usr/bin/protoc</protobuf.protoc.path>
+    <docker.image.repository>us.gcr.io/omlett-platform</docker.image.repository>
+    <docker.image.base>${docker.image.repository}/adoptopenjdk:11-jdk-alpine-protobuf</docker.image.base>
+    <docker.image.finalName>${docker.image.repository}/${project.artifactId}</docker.image.finalName>
   </properties>
 
   <dependencyManagement>
@@ -114,14 +117,21 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>${compiler.plugin.version}</version>
         <configuration>
-          <source>${compiler.source.version}</source>
-          <target>${compiler.target.version}</target>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
         </configuration>
       </plugin>
       <plugin>
@@ -140,103 +150,34 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>${jib.plugin.version}</version>
+        <configuration>
+          <from>
+            <image>${docker.image.base}</image>
+          </from>
+          <to>
+            <image>${docker.image.finalName}</image>
+          </to>
+          <container>
+            <ports>
+              <port>8080</port>
+            </ports>
+          </container>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
-
-  <profiles>
-    <profile>
-      <id>build-docker-image</id>
-      <activation>
-        <property>
-          <name>build</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>fabric8-maven-plugin</artifactId>
-            <version>${fabric8.plugin.version}</version>
-            <executions>
-              <!-- TODO -->
-            </executions>
-            <configuration>
-              <buildArgs>
-                <JAR_FILE>${fabric8.build.jar.file}</JAR_FILE>
-              </buildArgs>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>helm</id>
-      <activation>
-        <property>
-          <name>helm</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>fabric8-maven-plugin</artifactId>
-            <version>${fabric8.plugin.version}</version>
-            <configuration>
-              <ignoreServices>false</ignoreServices>
-              <helm>
-                <type>kubernetes</type>
-              </helm>
-              <registry>${fabric8.docker.image.repository}</registry>
-              <resourceDir>${fabric8.resource.directory}</resourceDir>
-            </configuration>
-            <executions>
-              <execution>
-                <id>create-helm-chart</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>resource</goal>
-                  <goal>helm</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>deploy-containers</id>
-      <activation>
-        <property>
-          <name>deploy-containers</name>
-        </property>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>fabric8-maven-plugin</artifactId>
-            <version>${fabric8.plugin.version}</version>
-            <configuration>
-              <ignoreServices>false</ignoreServices>
-              <registry>${fabric8.docker.image.repository}</registry>
-              <resourceDir>fabric8.resource.directory</resourceDir>
-            </configuration>
-            <executions>
-              <execution>
-                <id>deploy-to-k8s</id>
-                <phase>deploy</phase>
-                <goals>
-                  <goal>resource</goal>
-                  <goal>apply</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 
   <distributionManagement>
     <repository>
