@@ -54,6 +54,7 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
     cluster.setUsername(cassandraProperties.getUsername());
     cluster.setPassword(cassandraProperties.getPassword());
     cluster.setKeyspaceCreations(getKeyspaceCreations());
+    cluster.setJmxReportingEnabled(false);
 
     return cluster;
   }
