@@ -16,8 +16,6 @@
   </parent>
 
   <properties>
-    <!-- Bom Versions -->
-    <keycloak.version>7.0.1</keycloak.version>
     <!-- Dependency Versions -->
     <slf4j.version>1.7.9</slf4j.version>
     <lombok.version>1.16.22</lombok.version>
@@ -30,28 +28,13 @@
     <jib.plugin.version>1.7.0</jib.plugin.version>
     <!-- Maven Plugin Configurations -->
     <java.version>11</java.version>
-    <!-- NOTE: SET YOUR PROTOC COMPILER PATH
-         You can find it using this command:
-         > type -a protoc
-    -->
-    <protobuf.protoc.path>/usr/bin/protoc</protobuf.protoc.path>
+    <keycloak.version>7.0.0</keycloak.version>
+    <protobuf.protoc.path>/usr/bin/protoc</protobuf.protoc.path>  <!-- >type -a protoc -->
     <docker.image.repository>us.gcr.io/omlett-platform</docker.image.repository>
     <docker.image.base>adoptopenjdk/openjdk11:alpine</docker.image.base>
     <docker.image.finalName>${docker.image.repository}/${project.artifactId}
     </docker.image.finalName>
   </properties>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>org.keycloak.bom</groupId>
-        <artifactId>keycloak-adapter-bom</artifactId>
-        <version>${keycloak.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
 
   <dependencies>
     <!-- Spring -->
@@ -66,12 +49,10 @@
       <optional>true</optional>
     </dependency>
 
-    <!-- TODO: Spring Security: JWT Verification, CORS headers
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
-    -->
 
     <dependency>
       <groupId>org.springframework.data</groupId>
@@ -90,6 +71,12 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.keycloak</groupId>
+      <artifactId>keycloak-core</artifactId>
+      <version>${keycloak.version}</version>
     </dependency>
 
     <dependency>

@@ -1,6 +1,5 @@
-package io.omlett.coffeehaus.player.service.persistence;
+package io.omlett.coffeehaus.player.service.persistence.config;
 
-import io.omlett.coffeehaus.player.service.persistence.config.CassandraProperties;
 import io.omlett.coffeehaus.player.service.persistence.converter.ProtobufReadConverter;
 import io.omlett.coffeehaus.player.service.persistence.converter.ProtobufWriteConverter;
 import io.omlett.coffeehaus.player.service.persistence.proto.AccountProfileEntity;

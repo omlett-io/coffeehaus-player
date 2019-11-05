@@ -7,6 +7,9 @@ spring:
       password: ${CASSANDRA_PASSWORD:pass}
       keyspace-name: ${CASSANDRA_KEYSPACE_NAME:coffeehaus}
 
+keycloak:
+  realm-url: ${KEYCLOAK_REALM_URL}
+  public-key-certificate: ${KEYCLOAK_PUBLIC_KEY_CERTIFICATE}
 
 spotify:
   client-id: ${SPOTIFY_CLIENT_ID:0123456789}

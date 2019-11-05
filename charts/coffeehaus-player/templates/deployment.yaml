@@ -60,6 +60,16 @@ spec:
               configMapKeyRef:
                 name: services-configuration
                 key: coffeehaus.spotify.redirect-uri
+          - name: KEYCLOAK_REALM_URL
+            valueFrom:
+              configMapKeyRef:
+                name: services-configuration
+                key: keycloak.realm-url
+          - name: KEYCLOAK_PUBLIC_KEY_CERTIFICATE
+            valueFrom:
+              secretKeyRef:
+                name: coffeehaus-secrets
+                key: keycloak-public-key-certificate
           ports:
             - name: http
               containerPort: 80
