@@ -41,19 +41,20 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
       return;
     }
 
-    getAuthentication(header)
+    getAuthentication(header.substring(TOKEN_PREFIX.length()))
         .ifPresent(token -> SecurityContextHolder.getContext().setAuthentication(token));
 
     chain.doFilter(request, response);
   }
 
-  private Optional<Authentication> getAuthentication(String header) {
+  private Optional<Authentication> getAuthentication(String bearerToken) {
 
     Authentication authentication = null;
     try {
-      AccessToken token = tokenVerifier.verifyToken(header).getToken();
+      AccessToken token = tokenVerifier.verifyToken(bearerToken).getToken();
       UserDetails userDetails = extractUserFromToken(token);
       authentication = new PreAuthenticatedAuthenticationToken(userDetails, null);
+      authentication.setAuthenticated(true);
     } catch (VerificationException e) {
       log.warn("Caught an exception trying to verify the access token: {}", e.getMessage());
     }

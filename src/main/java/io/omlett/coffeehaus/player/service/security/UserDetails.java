@@ -5,7 +5,7 @@ import lombok.Value;
 
 @Value
 @Builder
-class UserDetails {
+public class UserDetails {
 
   private String subject;
   private String username;

@@ -24,20 +24,23 @@ message Player {
   * CoffeeHaus the necessary permissions to control their specified
   * music streaming service's player. */
 message AuthorizationUriRequest {
-  AuthInfo auth = 1;
-  repeated MusicStreamingService services = 2;
+  repeated MusicStreamingService services = 1;
 }
 
 message AuthorizationUriResponse {
-  repeated string service_uri = 1;
+  repeated ServiceUri service_uri = 1;
+
+  message ServiceUri {
+    MusicStreamingService service = 1;
+    string uri = 2;
+  }
 }
 
 /** POST the authorization code returned by the music streaming service.
   * CoffeeHaus will use this to act on the user's behalf. */
 message AddPlayerRequest {
-  AuthInfo auth = 1;
-  MusicStreamingService player_type = 2;
-  string player_authorization_code = 3;
+  MusicStreamingService player_type = 1;
+  string player_authorization_code = 2;
 }
 
 message AddPlayerResponse {

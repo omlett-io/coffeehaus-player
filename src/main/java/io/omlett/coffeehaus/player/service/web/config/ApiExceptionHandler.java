@@ -1,5 +1,6 @@
 package io.omlett.coffeehaus.player.service.web.config;
 
+import io.omlett.coffeehaus.player.service.web.exception.UnexpectedPrincipalException;
 import java.util.Date;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(IllegalArgumentException.class)
   public ResponseEntity<Object> handleBadRequestException(IllegalArgumentException ex) {
     HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+    return ResponseEntity.status(httpStatus).body(logAndTimestampException(ex));
+  }
+
+  @ExceptionHandler(UnexpectedPrincipalException.class)
+  public ResponseEntity<Object> handleBadPrincipalException(UnexpectedPrincipalException ex) {
+    HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
     return ResponseEntity.status(httpStatus).body(logAndTimestampException(ex));
   }
 
