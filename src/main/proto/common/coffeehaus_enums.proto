@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option java_package = "io.omlett.coffeehaus.player.service.proto";
+option java_multiple_files = true;
+
+enum MusicStreamingService {
+  SPOTIFY = 0;
+  SOUNDCLOUD = 1;
+  YOUTUBE = 2;
+}
+
+enum PlayerCommand {
+  PAUSE = 0;
+  PLAY_NEXT = 1;
+  PLAY_NOW = 2;
+  ADD_TO_QUEUE = 3;
+  REMOVE_FROM_QUEUE = 4;
+}
